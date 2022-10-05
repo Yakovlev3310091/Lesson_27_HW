@@ -28,6 +28,7 @@ class UserListView(ListView):
                  'first_name': user.first_name,
                  'last_name': user.last_name,
                  'role': user.role,
+                 'age': user.age,
                  'ads_count': user.ads.count()
                  })
         return JsonResponse({'ads': result, 'page': page_obj.number, 'total': page_obj.paginator.count},
@@ -47,7 +48,8 @@ class UserCreateView(CreateView):
             first_name=data['first_name'],
             last_name=data['last_name'],
             role=data['role'],
-            password=data['password']
+            password=data['password'],
+            age=data['age']
         )
         for loc in data['locations']:
             location, _ = Location.objects.get_or_create(name=loc)
@@ -59,6 +61,7 @@ class UserCreateView(CreateView):
              'first_name': user.first_name,
              'last_name': user.last_name,
              'role': user.role,
+             'age': user.age,
              'locations': [str(u) for u in user.location.all()]
              })
 

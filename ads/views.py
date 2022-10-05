@@ -95,6 +95,7 @@ class AdListView(ListView):
                 {'id': ad.id,
                  'name': ad.name,
                  'author': ad.author.user_name,
+                 'age': ad.age,
                  'category': ad.category.name if ad.category else 'Без категории',
                  'price': ad.price,
                  'description': ad.description,
@@ -123,7 +124,7 @@ class AdListView(ListView):
 @method_decorator(csrf_exempt, name='dispatch')
 class AdCreateView(CreateView):
     model = Ad
-    fields = ['name', 'author', 'price', 'description', 'is_published', 'category']
+    fields = ['name', 'author', 'price', 'description', 'is_published', 'category', 'age']
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
@@ -135,6 +136,7 @@ class AdCreateView(CreateView):
             name=data['name'],
             author=author,
             category=category,
+            age=data['age'],
             price=data['price'],
             description=data['description'],
             is_published=data['is_published'] if 'is_published' in data else False
@@ -143,6 +145,7 @@ class AdCreateView(CreateView):
                              'name': new_ad.name,
                              'author': new_ad.author.user_name,
                              'category': new_ad.category.name,
+                             'age': new_ad.age,
                              'price': new_ad.price,
                              'description': new_ad.description,
                              'is_published': new_ad.is_published
@@ -161,6 +164,7 @@ class AdUploadImageView(UpdateView):
         return JsonResponse({'id': self.object.id,
                              'name': self.object.name,
                              'author': self.object.author.user_name,
+                             'age': self.object.age,
                              'category': self.object.category.name,
                              'price': self.object.price,
                              'description': self.object.description,
@@ -177,6 +181,7 @@ class AdDetailView(DetailView):
         return JsonResponse({'id': ad.id,
                              'name': ad.name,
                              'author': ad.author,
+                             'age': ad.age,
                              'price': ad.price,
                              'description': ad.description,
                              'is_published': ad.is_published
