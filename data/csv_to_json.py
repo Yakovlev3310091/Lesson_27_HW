@@ -8,9 +8,10 @@ JSON_CATEGORIES = 'categories.json'
 DATA_LOC = 'location.csv'
 JSON_LOC = 'location.json'
 
+
 def convert_file(csv_file, json_file, model_name):
     result = []
-    with open (csv_file, encoding='utf-8') as csv_f:
+    with open(csv_file, encoding='utf-8') as csv_f:
         for row in csv.DictReader(csv_f):
             to_add = {'model': model_name, 'pk': int(row['Id'] if 'Id' in row else row['id'])}
             if 'Id' in row:
@@ -18,7 +19,7 @@ def convert_file(csv_file, json_file, model_name):
             else:
                 del row['id']
             if 'is_published' in row:
-                if row ['is_published'] == "TRUE":
+                if row['is_published'] == "TRUE":
                     row['is_published'] = True
                 else:
                     row['is_published'] = False
@@ -27,7 +28,8 @@ def convert_file(csv_file, json_file, model_name):
             to_add['fields'] = row
             result.append(to_add)
     with open(json_file, 'w', encoding='utf-8') as json_f:
-        json_f.write(json.dumps(result, ensure_ascii=False))
+        json_f.write(json.dumps(result, indent=4, ensure_ascii=False))
+
 
 # convert_file(DATA_CATEGORIES, JSON_CATEGORIES, 'ads.category')
 # convert_file(DATA_ADS, JSON_ADS, 'ads.ad')

@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Location(models.Model):
     name = models.CharField(verbose_name='Наименование', max_length=100)
     lat = models.DecimalField(verbose_name='Широта', max_digits=8, decimal_places=6, null=True)
@@ -22,6 +23,7 @@ class UserRoles:
         ('Администратор', ADMIN),
         ('Модератор', MODERATOR),
     )
+
 
 class User(models.Model):
     first_name = models.CharField(verbose_name='Имя', max_length=60)

@@ -19,9 +19,10 @@ class Ad(models.Model):
     author = models.ForeignKey(User, verbose_name='Заявитель', on_delete=models.CASCADE, related_name='ads')
     price = models.PositiveIntegerField(verbose_name='Цена')
     description = models.TextField(verbose_name='Описание', null=True)
-    is_published = models.BooleanField(verbose_name='Опубликовано',default=False)
+    is_published = models.BooleanField(verbose_name='Опубликовано', default=False)
     image = models.ImageField(verbose_name='Фото', upload_to='pictures', null=True, blank=True)
-    category = models.ForeignKey(Category, verbose_name='Категория', null=True, on_delete=models.SET_NULL, related_name='ads')
+    category = models.ForeignKey(Category, verbose_name='Категория', null=True, on_delete=models.SET_NULL,
+                                 related_name='ads')
 
     class Meta:
         verbose_name = 'Объявление'
@@ -29,6 +30,3 @@ class Ad(models.Model):
 
     def __str__(self):
         return self.name
-
-
-

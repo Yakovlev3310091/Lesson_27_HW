@@ -67,7 +67,7 @@ class CategoryDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)
 
-        return JsonResponse({}, status=204)
+        return JsonResponse({'status':'ok'}, status=204)
 
 
 class CategoryDetailView(DetailView):
