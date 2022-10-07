@@ -7,6 +7,8 @@ DATA_CATEGORIES = 'category.csv'
 JSON_CATEGORIES = 'categories.json'
 DATA_LOC = 'location.csv'
 JSON_LOC = 'location.json'
+DATA_USER = 'user.csv'
+JSON_USER = 'user.json'
 
 
 def convert_file(csv_file, json_file, model_name):
@@ -33,4 +35,5 @@ def convert_file(csv_file, json_file, model_name):
 
 # convert_file(DATA_CATEGORIES, JSON_CATEGORIES, 'ads.category')
 # convert_file(DATA_ADS, JSON_ADS, 'ads.ad')
-convert_file(DATA_LOC, JSON_LOC, 'users.location')
+#convert_file(DATA_LOC, JSON_LOC, 'users.location')
+convert_file(DATA_USER, JSON_USER, 'users.user')
