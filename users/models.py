@@ -19,9 +19,9 @@ class UserRoles:
     ADMIN = 'admin'
     MODERATOR = 'moderator'
     choices = (
-        ('Пользователь', USER),
-        ('Администратор', ADMIN),
-        ('Модератор', MODERATOR),
+        (USER, 'Пользователь'),
+        (ADMIN, 'Администратор'),
+        (MODERATOR, 'Модератор'),
     )
 
 
@@ -32,7 +32,7 @@ class User(models.Model):
     password = models.CharField(verbose_name='Пароль', max_length=25)
     role = models.CharField(verbose_name='Тип', choices=UserRoles.choices, default='member', max_length=13)
     location = models.ManyToManyField(Location, verbose_name='Местоположение')
-    age = models.PositiveIntegerField(verbose_name='Возраст', default=16)
+    age = models.PositiveSmallIntegerField(verbose_name='Возраст', null=True)
 
     class Meta:
         verbose_name = 'Пользователь'
