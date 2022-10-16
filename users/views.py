@@ -32,7 +32,7 @@ class LocationViewSet(ModelViewSet):
 #         for user in page_obj:
 #             result.append(
 #                 {'id': user.id,
-#                  'user_name': user.user_name,
+#                  'username': user.username,
 #                  'first_name': user.first_name,
 #                  'last_name': user.last_name,
 #                  'role': user.role,
@@ -57,7 +57,7 @@ class UserListView(ListAPIView):
 #         user = self.get_object()
 #         return JsonResponse({
 #             'id': user.id,
-#             'user_name': user.user_name,
+#             'username': user.username,
 #             'first_name': user.first_name,
 #             'last_name': user.last_name,
 #             'role': user.role,
@@ -71,13 +71,13 @@ class UserDetailView(RetrieveAPIView):
 # @method_decorator(csrf_exempt, name='dispatch')
 # class UserCreateView(CreateView):
 #     model = User
-#     fields = ['user_name', 'password', 'first_name', 'last_name', 'role', 'age', 'locations']
+#     fields = ['username', 'password', 'first_name', 'last_name', 'role', 'age', 'locations']
 #
 #     def post(self, request, *args, **kwargs):
 #         data = json.loads(request.body)
 #
 #         user = User.objects.create(
-#             user_name=data['user_name'],
+#             username=data['username'],
 #             first_name=data['first_name'],
 #             last_name=data['last_name'],
 #             role=data['role'],
@@ -90,7 +90,7 @@ class UserDetailView(RetrieveAPIView):
 #
 #         return JsonResponse(
 #             {'id': user.id,
-#              'user_name': user.user_name,
+#              'username': user.username,
 #              'first_name': user.first_name,
 #              'last_name': user.last_name,
 #              'role': user.role,
@@ -106,20 +106,20 @@ class UserCreateView(CreateAPIView):
 # @method_decorator(csrf_exempt, name='dispatch')
 # class UserUpdateView(UpdateView):
 #     model = User
-#     fields = ['user_name', 'first_name', 'last_name', 'role', 'age']
+#     fields = ['username', 'first_name', 'last_name', 'role', 'age']
 #
 #     def patch(self, request, *args, **kwargs):
 #         super().post(request, *args, **kwargs)
 #         data = json.loads(request.body)
 #
-#         self.object.user_name = data['user_name']
+#         self.object.username = data['username']
 #         self.object.first_name = data['first_name']
 #         self.object.last_name = data['last_name']
 #         self.object.role = data['role']
 #         self.object.age = data['age']
 #         self.object.save()
 #         return JsonResponse({'id': self.object.id,
-#                              'user_name': self.object.user_name,
+#                              'username': self.object.username,
 #                              'first_name': self.object.first_name,
 #                              'last_name': self.object.last_name,
 #                              'role': self.object.role,

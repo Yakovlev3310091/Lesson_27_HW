@@ -7,14 +7,21 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView, ListView
-from rest_framework.generics import ListAPIView
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
 
 from Lesson_27_HW import settings
-from ads.models import Category, Ad
-from ads.serializers import AdListSerializer
+from ads.models import Category, Ad, Selection
+from ads.permissions import IsOwnerSelection, IsOwnerAdOrStaff
+from ads.serializers import AdListSerializer, AdDetailSerializer, SelectionCreateSerializer, SelectionListSerializer, \
+    SelectionDetailSerializer, AdUpdateSerializer
 from users.models import User
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def root(request):
     return JsonResponse({'status': 'ok'})
 
@@ -96,7 +103,7 @@ class CategoryDetailView(DetailView):
 #             result.append(
 #                 {'id': ad.id,
 #                  'name': ad.name,
-#                  'author': ad.author.user_name,
+#                  'author': ad.author.username,
 #                  'age': ad.age,
 #                  'category': ad.category.name if ad.category else 'Без категории',
 #                  'price': ad.price,
@@ -174,13 +181,26 @@ class AdCreateView(CreateView):
         )
         return JsonResponse({'id': new_ad.id,
                              'name': new_ad.name,
-                             'author': new_ad.author.user_name,
+                             'author': new_ad.author.username,
                              'category': new_ad.category.name,
                              'age': new_ad.age,
                              'price': new_ad.price,
                              'description': new_ad.description,
                              'is_published': new_ad.is_published
                              }, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+
+class AdUpdateView(UpdateAPIView):
+   queryset = Ad.objects.all()
+   serializer_class = AdUpdateSerializer
+   permission_classes = [IsAuthenticated, IsOwnerAdOrStaff]
+
+
+class AdDeleteView(DestroyAPIView):
+   queryset = Ad.objects.all()
+   serializer_class = AdUpdateSerializer
+   permission_classes = [IsAuthenticated, IsOwnerAdOrStaff]
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -194,7 +214,7 @@ class AdUploadImageView(UpdateView):
         self.object.save()
         return JsonResponse({'id': self.object.id,
                              'name': self.object.name,
-                             'author': self.object.author.user_name,
+                             'author': self.object.author.username,
                              'age': self.object.age,
                              'category': self.object.category.name,
                              'price': self.object.price,
@@ -204,17 +224,50 @@ class AdUploadImageView(UpdateView):
                              }, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
-class AdDetailView(DetailView):
-    model = Ad
+# class AdDetailView(DetailView):
+#     model = Ad
+#
+#     def get(self, request, *args, **kwargs):
+#         ad = self.get_object()
+#         return JsonResponse({'id': ad.id,
+#                              'name': ad.name,
+#                              'author': ad.author,
+#                              'age': ad.age,
+#                              'price': ad.price,
+#                              'description': ad.description,
+#                              'is_published': ad.is_published
+#                              }, safe=False, json_dumps_params={'ensure_ascii': False})
 
-    def get(self, request, *args, **kwargs):
-        ad = self.get_object()
-        return JsonResponse({'id': ad.id,
-                             'name': ad.name,
-                             'author': ad.author,
-                             'age': ad.age,
-                             'price': ad.price,
-                             'description': ad.description,
-                             'is_published': ad.is_published
-                             }, safe=False, json_dumps_params={'ensure_ascii': False})
+class AdDetailView(RetrieveAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdDetailSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class SelectionCreateView(CreateAPIView):
+    queryset = Selection.objects.all()
+    serializer_class = SelectionCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class SelectionUpdateView(UpdateAPIView):
+    queryset = Selection.objects.all()
+    serializer_class = SelectionCreateSerializer
+    permission_classes = [IsAuthenticated, IsOwnerSelection]
+
+
+class SelectionListView(ListAPIView):
+    queryset = Selection.objects.all()
+    serializer_class = SelectionListSerializer
+
+
+class SelectionDetailView(RetrieveAPIView):
+    queryset = Selection.objects.all()
+    serializer_class = SelectionDetailSerializer
+
+
+class SelectionDeleteView(DestroyAPIView):
+    queryset = Selection.objects.all()
+    serializer_class = SelectionCreateSerializer
+    permission_classes = [IsAuthenticated]
 

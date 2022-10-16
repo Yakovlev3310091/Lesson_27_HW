@@ -20,6 +20,9 @@ def convert_file(csv_file, json_file, model_name):
                 del row['Id']
             else:
                 del row['id']
+            if 'location' in row:
+                row['locations'] = [int(row['location'])]
+                del row['location']
             if 'is_published' in row:
                 if row['is_published'] == "TRUE":
                     row['is_published'] = True
@@ -30,10 +33,10 @@ def convert_file(csv_file, json_file, model_name):
             to_add['fields'] = row
             result.append(to_add)
     with open(json_file, 'w', encoding='utf-8') as json_f:
-        json_f.write(json.dumps(result, indent=4, ensure_ascii=False))
+        json_f.write(json.dumps(result, ensure_ascii=False))
 
 
 # convert_file(DATA_CATEGORIES, JSON_CATEGORIES, 'ads.category')
 # convert_file(DATA_ADS, JSON_ADS, 'ads.ad')
 #convert_file(DATA_LOC, JSON_LOC, 'users.location')
-convert_file(DATA_USER, JSON_USER, 'users.user')
+#convert_file(DATA_USER, JSON_USER, 'users.user')

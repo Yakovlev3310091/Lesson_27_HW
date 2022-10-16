@@ -27,9 +27,12 @@ router.register(r'location', LocationViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', root),
+
     path('cat/', include('ads.urls.cat_urls')),
     path('ad/', include('ads.urls.ad_urls')),
-    path('user/', include('users.urls'))
+    path('selection/', include('ads.urls.selection_urls')),
+
+    path('user/', include('users.urls')),
 ]
 
 urlpatterns += router.urls
