@@ -10,7 +10,7 @@ class LocationSerialiser(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    location = serializers.SlugRelatedField(read_only=True, many=True, slug_field='name')
+    locations = serializers.SlugRelatedField(read_only=True, many=True, slug_field='name')
 
     class Meta:
         model = User
@@ -18,19 +18,19 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
-    location = serializers.SlugRelatedField(required=False, queryset=Location.objects.all(),
+    locations = serializers.SlugRelatedField(required=False, queryset=Location.objects.all(),
                                              many=True, slug_field='name')
 
     def is_valid(self, *, raise_exception=False):
-        self._locations = self.initial_data.pop('location', [])
+        self._locations = self.initial_data.pop('locations', [])
         return super().is_valid(raise_exception=raise_exception)
 
     def create(self, validated_data):
         user = User.objects.create(**validated_data)
 
         for loc in self._locations:
-            location, _ = Location.objects.get_or_create(name=loc)
-            user.location.add(location)
+            locations, _ = Location.objects.get_or_create(name=loc)
+            user.locations.add(locations)
 
         return user
 
@@ -41,18 +41,18 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    location = serializers.SlugRelatedField(required=False, queryset=Location.objects.all(),
+    locations = serializers.SlugRelatedField(required=False, queryset=Location.objects.all(),
                                             many=True, slug_field='name')
 
     def is_valid(self, *, raise_exception=False):
-        self._locations = self.initial_data.pop('location', [])
+        self._locations = self.initial_data.pop('locations', [])
         return super().is_valid(raise_exception=raise_exception)
 
     def save(self, **kwargs):
         user = super().save(**kwargs)
         for loc in self._locations:
-            location, _ = Location.objects.get_or_create(name=loc)
-            user.location.add(location)
+            locations, _ = Location.objects.get_or_create(name=loc)
+            user.locations.add(locations)
 
         return user
 
