@@ -32,6 +32,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
             locations, _ = Location.objects.get_or_create(name=loc)
             user.locations.add(locations)
 
+        user.set_password(user.password)
+        user.save()
+
         return user
 
 
@@ -53,6 +56,9 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         for loc in self._locations:
             locations, _ = Location.objects.get_or_create(name=loc)
             user.locations.add(locations)
+
+        user.set_password(user.password)
+        user.save()
 
         return user
 
