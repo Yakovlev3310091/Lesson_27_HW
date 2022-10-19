@@ -10,7 +10,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from Lesson_27_HW import settings
 from users.models import User, Location
-from users.serializers import *
+from users.serializers import LocationSerialiser, UserSerializer, UserCreateSerializer, UserUpdateSerializer, UserDeleteSerializer
 
 
 class LocationViewSet(ModelViewSet):
