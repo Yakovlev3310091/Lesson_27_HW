@@ -4,7 +4,20 @@ from ads.models import Ad, Category, Selection
 from users.models import User
 
 
+def is_published_validator(value):
+    if value:
+        raise serializers.ValidationError("is_published can not be True")
+    return value
+
+
 class AdListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = "__all__"
+
+
+class AdCreateSerializer(serializers.ModelSerializer):
+    is_published = serializers.BooleanField(validators=[is_published_validator], required=False)
     class Meta:
         model = Ad
         fields = "__all__"
