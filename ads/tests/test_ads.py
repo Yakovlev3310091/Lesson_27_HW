@@ -10,7 +10,7 @@ from django.urls import reverse
 def test_create_ad(api_client, user):
     data = {
         "name": "kajhghgfhgdffsf",
-        "author_id": user.id,
+        "author": user.id,
         "price": 10
     }
     url = reverse("ad_create")
