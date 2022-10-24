@@ -65,8 +65,8 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=150, null=True)
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=200)
-    birth_date = models.DateField(validators=[birth_date_validator])
-    email = models.EmailField(unique=True)
+    birth_date = models.DateField(validators=[birth_date_validator], null=True)
+    email = models.EmailField(unique=True, null=True)
 
     class Meta:
         verbose_name = 'Пользователь'
